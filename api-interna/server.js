@@ -1,20 +1,28 @@
-const http = require(‘http‘);
+const http = require('http');
 const PORT = process.env.PORT || 4000;
-const server = http.createServer((req, res) =&gt; {
-console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
-res.setHeader(&#39;Content-Type&#39;, &#39;application/json; charset=utf-8&#39;);
-if (req.url === &#39;/status&#39;) {
-res.writeHead(200);
-res.end(JSON.stringify({
-servicio: &#39;api-interna&#39;,
-estado: &#39;ok&#39;,
-puerto: PORT
-}));
-return;
-}
-res.writeHead(404);
-res.end(JSON.stringify({ error: &#39;recurso no encontrado&#39; }));
+
+const server = http.createServer((req, res) => {
+  console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+
+  // Endpoint de estado
+  if (req.url === '/status') {
+    res.writeHead(200);
+    res.end(JSON.stringify({
+      info: 'Sistemas Operativos - 4.º año',
+      servicio: 'api-interna',
+      estado: 'ok',
+      puerto: PORT
+    }));
+    return;
+  }
+
+  // Ruta por defecto (Not Found)
+  res.writeHead(404);
+  res.end(JSON.stringify({ error: 'recurso no encontrado' }));
 });
-server.listen(PORT, &#39;0.0.0.0&#39;, () =&gt; {
-console.log(`api-interna escuchando en ${PORT}`);
+
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`api-interna escuchando en ${PORT}`);
 });
+
